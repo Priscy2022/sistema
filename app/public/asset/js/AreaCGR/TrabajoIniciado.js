@@ -8,9 +8,19 @@ function obtenerDatos() {
         url: 'vistaTrabajo/tablaResultado', // Aquí debes proporcionar la URL de tu fuente de datos
         method: 'post',
         dataType: 'json',
-        data:{id_informe:1 },
+        data:{id_informe:$("#IdInforme").val() },
     });
 }
+$.ajax({
+    url:'vistaTrabajo/datosInforme',
+    type:'post',
+    data:{informe:$("#IdInforme").val()},
+    success:function(response){
+    console.log(response);
+    $(".TipoInforme").text(response[0].informe);
+    }
+});
+
 Antecedentes();
 $(".antecedentes").on('click', function(){
     Antecedentes();/// a la funcion hay que agregarle el id del informe
@@ -37,7 +47,7 @@ function Antecedentes(){
     $.ajax({
        url:'VistaTrabajo/Antecedentes',
        type:'post',
-       data:{informe:2},
+       data:{informe:$("#IdInforme").val()},
        success: function(response){
            $(".contenidoBoton").append(response.contenido);
            $("#justificacion").on('click', function(){
@@ -77,7 +87,7 @@ function Antecedentes(){
                    "type": "POST",
                    "url": "vistaTrabajo/tablaResultado",
                    "dataType":"json",
-                   "data": {id_informe:1},
+                   "data": {id_informe:$("#IdInforme").val()},
                },"columns": [
                    {"data": "numero"},
                    {"data": "capitulo"},
@@ -101,6 +111,10 @@ function Antecedentes(){
            console.log(info);
         });
            $("#tablaResultado tbody").on('click','a.botonContinuar',function(){
+               var info = $(this).data('idtabla');
+               console.log(info);
+           });
+           $("#tablaResultado tbody").on('click','a.botonAgregar', function(){
                var info = $(this).data('idtabla');
                console.log(info);
            });
